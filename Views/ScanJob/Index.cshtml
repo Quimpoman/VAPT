@@ -1,0 +1,239 @@
+﻿@using EVOLVE_VAPT.Security
+@model IEnumerable<EVOLVE_VAPT.ViewModels.ScanJob.ScanJobListViewModel>
+
+@{
+    ViewData["Title"] = "Scan Jobs";
+}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Scan Jobs
+        </h1>
+
+        <p class="page-description">
+            Governed scan requests and execution status.
+        </p>
+
+    </div>
+
+
+    @if (User.IsInRole(AppRoles.Administrator) ||
+        User.IsInRole(AppRoles.SecurityAnalyst))
+    {
+        <a asp-action="Create"
+           class="btn btn-primary">
+
+            <i class="bi bi-plus-lg me-1"></i>
+
+            New Scan Job
+
+        </a>
+    }
+
+</div>
+
+
+<section class="dashboard-panel">
+
+    <div class="panel-header">
+
+        <div class="panel-title-group">
+
+            <h2 class="panel-title">
+                Scan Jobs
+            </h2>
+
+            <span class="panel-description">
+                Requested, queued and processed scans.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+
+            <div class="empty-state-icon">
+                <i class="bi bi-play-circle"></i>
+            </div>
+
+            <h3 class="empty-state-title">
+                No Scan Jobs yet
+            </h3>
+
+            <p class="empty-state-description">
+                Create a Scan Job using an authorized
+                target and active Scan Profile.
+            </p>
+
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+
+            <table class="table align-middle mb-0">
+
+                <thead>
+                    <tr>
+                        <th>Job</th>
+                        <th>Assessment</th>
+                        <th>Target</th>
+                        <th>Profile</th>
+                        <th>Scanner</th>
+                        <th>Status</th>
+                        <th>Requested By</th>
+                        <th>Requested</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    @foreach (var job in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                <code>@job.JobCode</code>
+                            </td>
+
+
+                            <td>
+
+                                <strong>
+                                    @job.AssessmentCode
+                                </strong>
+
+                                <div class="text-muted small">
+                                    @job.AssessmentName
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <strong>
+                                    @job.TargetName
+                                </strong>
+
+                                <div class="text-muted small">
+                                    @job.TargetValue
+                                </div>
+
+                            </td>
+
+
+                            <td>
+                                @job.ScanProfileName
+                            </td>
+
+
+                            <td>
+                                @job.ScannerTypeCode
+                            </td>
+
+
+                            <td>
+
+                                @switch (job.ScanJobStatusCode)
+                                {
+                                    case "QUEUED":
+
+                                        <span class="badge text-bg-primary">
+                                            Queued
+                                        </span>
+
+                                        break;
+
+
+                                    case "PENDING_APPROVAL":
+
+                                        <span class="badge text-bg-warning">
+                                            Pending Approval
+                                        </span>
+
+                                        break;
+
+
+                                    case "RUNNING":
+
+                                        <span class="badge text-bg-info">
+                                            Running
+                                        </span>
+
+                                        break;
+
+
+                                    case "COMPLETED":
+
+                                        <span class="badge text-bg-success">
+                                            Completed
+                                        </span>
+
+                                        break;
+
+
+                                    case "FAILED":
+                                    case "BLOCKED":
+                                    case "REJECTED":
+
+                                        <span class="badge text-bg-danger">
+                                            @job.ScanJobStatusName
+                                        </span>
+
+                                        break;
+
+
+                                    default:
+
+                                        <span class="badge text-bg-secondary">
+                                            @job.ScanJobStatusName
+                                        </span>
+
+                                        break;
+                                }
+
+                            </td>
+
+
+                            <td>
+                                @(job.RequestedByEmail ?? "-")
+                            </td>
+
+
+                            <td>
+                                @job.RequestedDate.ToString("MMM dd, yyyy hh:mm tt")
+                            </td>
+                            <td class="text-end">
+
+                                <a asp-action="Details"
+                                   asp-route-id="@job.ScanJobID"
+                                   class="btn btn-sm btn-outline-secondary">
+
+                                    View
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+
+</section>

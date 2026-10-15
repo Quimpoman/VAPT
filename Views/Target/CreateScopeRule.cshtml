@@ -1,0 +1,177 @@
+﻿@model EVOLVE_VAPT.ViewModels.Target.ScopeRuleFormViewModel
+
+@{
+    ViewData["Title"] = "Add Scope Rule";
+
+    var targetName =
+        ViewData["TargetName"]?.ToString();
+
+    var targetValue =
+        ViewData["TargetValue"]?.ToString();
+
+    var authorizationStatus =
+        ViewData["AuthorizationStatus"]?.ToString();
+}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Add Scope Rule
+        </h1>
+
+        <p class="page-description">
+            @targetName — @targetValue
+        </p>
+
+    </div>
+
+</div>
+
+
+<form asp-action="CreateScopeRule"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+
+    <input asp-for="AssessmentTargetID"
+           type="hidden" />
+
+
+    <div asp-validation-summary="ModelOnly"
+         class="alert alert-danger">
+    </div>
+
+
+    @if (authorizationStatus == "APPROVED")
+    {
+        <div class="alert alert-warning">
+
+            <i class="bi bi-shield-exclamation me-2"></i>
+
+            This target is currently approved.
+            Changing its scope will return it to
+            <strong>Pending Approval</strong>.
+
+        </div>
+    }
+
+
+    <section class="dashboard-panel dashboard-panel-spacing">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Scope Boundary
+                </h2>
+
+                <span class="panel-description">
+                    Define what should be included or excluded
+                    during testing.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="row g-3">
+
+
+                <div class="col-md-4">
+
+                    <label asp-for="ScopeRuleTypeID"
+                           class="form-label">
+                    </label>
+
+                    <select asp-for="ScopeRuleTypeID"
+                            asp-items="Model.RuleTypeOptions"
+                            class="form-select">
+
+                        <option value="">
+                            Select rule type
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="ScopeRuleTypeID"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-8">
+
+                    <label asp-for="RuleValue"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="RuleValue"
+                           class="form-control"
+                           placeholder="e.g. /api/*" />
+
+                    <span asp-validation-for="RuleValue"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-12">
+
+                    <label asp-for="Description"
+                           class="form-label">
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="3">
+                    </textarea>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="d-flex justify-content-end gap-2">
+
+        <a asp-action="Details"
+           asp-route-id="@Model.AssessmentTargetID"
+           class="btn btn-outline-secondary">
+
+            Cancel
+
+        </a>
+
+
+        <button type="submit"
+                class="btn btn-primary">
+
+            <i class="bi bi-plus-lg me-1"></i>
+
+            Add Scope Rule
+
+        </button>
+
+    </div>
+
+</form>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

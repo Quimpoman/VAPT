@@ -1,0 +1,182 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "EVOLVE_VAPTContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "IrregularWords": null,
+   "MinimumProductVersion": "2.6.1465",
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PluralRules": null,
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "EVOLVE_VAPT",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "SingularRules": null,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[AuditTrail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[mst_Assessment]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[mst_ScanProfile]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[mst_Target]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ref_AssessmentStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ref_FindingStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ref_RemediationStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ref_RetestOutcome]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ref_RetestStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ref_ScanJobPurpose]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ref_ScanJobStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ref_ScannerOption]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ref_ScannerType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ref_ScopeRuleType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ref_Severity]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ref_TargetAuthorizationStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ref_TargetType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[trn_AssessmentScopeRule]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[trn_AssessmentTarget]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[trn_Finding]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[trn_FindingRemediation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[trn_FindingRetest]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[trn_ScanJob]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[trn_ScanProfileOption]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[trn_ScanResult]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[vwGet_AssessmentData]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwGet_AssessmentScopeRuleData]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwGet_AssessmentTargetData]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwGet_FindingData]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwGet_FindingRemediationData]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwGet_FindingRetestData]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwGet_ScanJobData]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwGet_ScanProfileData]",
+         "ObjectType": 3
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": false,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": false,
+   "UseTypedTvpParameters": true
+}

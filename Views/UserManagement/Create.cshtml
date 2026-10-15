@@ -1,0 +1,195 @@
+﻿@model EVOLVE_VAPT.ViewModels.Administration.UserCreateViewModel
+
+@{
+    ViewData["Title"] = "Create User";
+}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Create User
+        </h1>
+
+        <p class="page-description">
+            Create an application account and
+            assign its initial security role.
+        </p>
+
+    </div>
+
+
+    <div>
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-1"></i>
+
+            Back
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<section class="dashboard-panel">
+
+    <div class="panel-header">
+
+        <div class="panel-title-group">
+
+            <h2 class="panel-title">
+                Account Information
+            </h2>
+
+            <span class="panel-description">
+                Define the login account and
+                initial application access.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <form asp-action="Create"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+
+                    <label asp-for="Email"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="Email"
+                           class="form-control"
+                           autocomplete="off" />
+
+                    <span asp-validation-for="Email"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="Role"
+                           class="form-label">
+                    </label>
+
+                    <select asp-for="Role"
+                            class="form-select">
+
+                        <option value="">
+                            -- Select Role --
+                        </option>
+
+                        @foreach (
+                                                var role
+                                                in Model.AvailableRoles)
+                        {
+                            <option value="@role">
+                                @role
+                            </option>
+                        }
+
+                    </select>
+
+                    <span asp-validation-for="Role"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="InitialPassword"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="InitialPassword"
+                           class="form-control"
+                           autocomplete="new-password" />
+
+                    <span asp-validation-for="InitialPassword"
+                          class="text-danger">
+                    </span>
+
+                    <div class="form-text">
+                        Must satisfy the configured
+                        system password policy.
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="ConfirmPassword"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="ConfirmPassword"
+                           class="form-control"
+                           autocomplete="new-password" />
+
+                    <span asp-validation-for="ConfirmPassword"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="mt-4 d-flex gap-2">
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    <i class="bi bi-person-plus me-1"></i>
+
+                    Create User
+
+                </button>
+
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

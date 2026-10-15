@@ -1,0 +1,114 @@
+﻿@model IEnumerable<EVOLVE_VAPT.ViewModels.Remediation.RetestListViewModel>
+
+@{
+    ViewData["Title"] = "Remediation";
+}
+
+<div class="page-header">
+
+    <div>
+        <h1 class="page-title">
+            Remediation
+        </h1>
+
+        <p class="page-description">
+            Track remediation work for confirmed vulnerabilities.
+        </p>
+    </div>
+
+</div>
+
+
+<section class="dashboard-panel">
+
+    <div class="panel-body">
+
+        @if (!Model.Any())
+        {
+            <div class="text-muted">
+                No remediation records are currently available.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Severity</th>
+                            <th>Finding</th>
+                            <th>Assessment</th>
+                            <th>Assigned To</th>
+                            <th>Target Date</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @item.SeverityName
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        @item.FindingTitle
+                                    </strong>
+
+                                    <div class="text-muted small">
+                                        Cycle @item.CycleNo
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @item.AssessmentCode
+                                </td>
+
+                                <td>
+                                    @(item.AssignedToEmail
+                                                                ?? "Unassigned")
+                                                                            </td>
+
+                                <td>
+                                    @(item.TargetDate.HasValue
+                                                                ? item.TargetDate.Value
+                                                                .ToString("MMM dd, yyyy")
+                                                                : "-")
+                        </td>
+
+                                <td>
+                                    @item.RemediationStatusName
+                                </td>
+
+                                <td class="text-end">
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@item.FindingRemediationID"
+                                       class="btn btn-sm btn-outline-secondary">
+
+                                        View
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+
+    </div>
+
+</section>

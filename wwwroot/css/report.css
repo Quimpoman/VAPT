@@ -1,0 +1,137 @@
+body {
+    margin: 0;
+    background: #f5f6f8;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #172033;
+}
+
+.report-document {
+    width: min(1100px, calc(100% - 40px));
+    margin: 30px auto;
+    padding: 50px;
+    background: #ffffff;
+    border: 1px solid #e3e6eb;
+}
+
+.report-header {
+    padding-bottom: 24px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #172033;
+}
+
+.report-company {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .04em;
+}
+
+.report-title {
+    margin: 8px 0 4px;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.report-subtitle {
+    color: #667085;
+}
+
+.report-section {
+    margin-top: 34px;
+    break-inside: avoid;
+}
+
+.report-section-title {
+    padding-bottom: 8px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid #dfe3e8;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.report-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.report-summary-card {
+    padding: 16px;
+    border: 1px solid #dfe3e8;
+    border-radius: 6px;
+}
+
+.report-summary-value {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.report-label {
+    color: #667085;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.finding-report-item {
+    margin-bottom: 28px;
+    padding: 22px;
+    border: 1px solid #dfe3e8;
+    border-radius: 6px;
+    break-inside: avoid;
+}
+
+.report-pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-family: inherit;
+}
+
+.report-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+@media print {
+
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+
+    body {
+        background: #ffffff;
+        font-size: 10pt;
+    }
+
+    .report-document {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .report-section {
+        break-inside: auto;
+    }
+
+    .finding-report-item {
+        break-inside: avoid;
+    }
+
+    table {
+        break-inside: auto;
+    }
+
+    tr {
+        break-inside: avoid;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+}

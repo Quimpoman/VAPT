@@ -1,0 +1,191 @@
+﻿@model EVOLVE_VAPT.ViewModels.Assessment.AssessmentFormViewModel
+
+<div class="row g-3">
+
+    <div class="col-md-4">
+
+        <label asp-for="AssessmentCode"
+               class="form-label">
+        </label>
+
+        <input asp-for="AssessmentCode"
+               class="form-control" />
+
+        <span asp-validation-for="AssessmentCode"
+              class="text-danger">
+        </span>
+
+    </div>
+
+
+    <div class="col-md-8">
+
+        <label asp-for="AssessmentName"
+               class="form-label">
+        </label>
+
+        <input asp-for="AssessmentName"
+               class="form-control" />
+
+        <span asp-validation-for="AssessmentName"
+              class="text-danger">
+        </span>
+
+    </div>
+
+
+    <div class="col-12">
+
+        <label asp-for="Description"
+               class="form-label">
+        </label>
+
+        <textarea asp-for="Description"
+                  class="form-control"
+                  rows="3">
+        </textarea>
+
+    </div>
+
+
+    <div class="col-md-6">
+
+        <label asp-for="Methodology"
+               class="form-label">
+        </label>
+
+        <input asp-for="Methodology"
+               class="form-control" />
+
+    </div>
+
+
+    <div class="col-md-6">
+
+        <label asp-for="Environment"
+               class="form-label">
+        </label>
+
+        <input asp-for="Environment"
+               class="form-control" />
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <label asp-for="AssessmentStatusID"
+               class="form-label">
+        </label>
+
+        <select asp-for="AssessmentStatusID"
+                asp-items="Model.StatusOptions"
+                class="form-select">
+
+            <option value="">
+                Select status
+            </option>
+
+        </select>
+
+        <span asp-validation-for="AssessmentStatusID"
+              class="text-danger">
+        </span>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <label asp-for="PlannedStartDate"
+               class="form-label">
+        </label>
+
+        <input asp-for="PlannedStartDate"
+               class="form-control" />
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <label asp-for="PlannedEndDate"
+               class="form-label">
+        </label>
+
+        <input asp-for="PlannedEndDate"
+               class="form-control" />
+
+        <span asp-validation-for="PlannedEndDate"
+              class="text-danger">
+        </span>
+
+    </div>
+
+
+    <div class="col-md-6">
+
+        <label asp-for="ActualStartDate"
+               class="form-label">
+        </label>
+
+        <input asp-for="ActualStartDate"
+               class="form-control" />
+
+    </div>
+
+
+    <div class="col-md-6">
+
+        <label asp-for="ActualEndDate"
+               class="form-label">
+        </label>
+
+        <input asp-for="ActualEndDate"
+               class="form-control" />
+
+        <span asp-validation-for="ActualEndDate"
+              class="text-danger">
+        </span>
+
+    </div>
+
+
+    <div class="col-md-6">
+
+        <label asp-for="OwnerUserID"
+               class="form-label">
+        </label>
+
+        <select asp-for="OwnerUserID"
+                asp-items="Model.UserOptions"
+                class="form-select">
+
+            <option value="">
+                Select owner
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="col-md-6">
+
+        <label asp-for="ReviewerUserID"
+               class="form-label">
+        </label>
+
+        <select asp-for="ReviewerUserID"
+                asp-items="Model.UserOptions"
+                class="form-select">
+
+            <option value="">
+                Select reviewer
+            </option>
+
+        </select>
+
+    </div>
+
+</div>

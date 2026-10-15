@@ -1,0 +1,413 @@
+﻿@* @{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+ *@
+
+@model EVOLVE_VAPT.ViewModels.Dashboard.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+<div class="vapt-dashboard">
+    <div class="page-header">
+
+        <div>
+
+            <h1 class="page-title">
+                VAPT Dashboard
+            </h1>
+
+            <p class="page-description">
+                Security assessment, scanning, findings,
+                and remediation overview.
+            </p>
+
+        </div>
+
+    </div>
+    <div class="dashboard-summary">
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="bi bi-clipboard2-check"></i>
+            </div>
+
+            <div class="summary-content">
+
+                <span class="summary-label">
+                    Active Assessments
+                </span>
+
+                <span class="summary-value">
+                    @Model.ActiveAssessments
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="bi bi-radar"></i>
+            </div>
+
+            <div class="summary-content">
+
+                <span class="summary-label">
+                    Running Scans
+                </span>
+
+                <span class="summary-value">
+                    @Model.RunningScans
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="bi bi-exclamation-triangle"></i>
+            </div>
+
+            <div class="summary-content">
+
+                <span class="summary-label">
+                    Open Findings
+                </span>
+
+                <span class="summary-value">
+                    @Model.OpenFindings
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="bi bi-tools"></i>
+            </div>
+
+            <div class="summary-content">
+
+                <span class="summary-label">
+                    Pending Remediation
+                </span>
+
+                <span class="summary-value">
+                    @Model.PendingRemediation
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="dashboard-grid">
+
+            <section class="dashboard-panel">
+
+                <div class="panel-header">
+
+                    <div class="panel-title-group">
+
+                        <h2 class="panel-title">
+                            Severity Distribution
+                        </h2>
+
+                        <span class="panel-description">
+                            Current findings grouped by severity.
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="panel-body">
+
+                    @foreach (var severity in Model.SeverityDistribution)
+                    {
+                        <div class="severity-row">
+
+                            <div class="severity-label">
+
+                                <span class="severity-dot
+                                 severity-@severity.SeverityCode.ToLowerInvariant()">
+                                </span>
+
+                                @severity.SeverityName
+
+                            </div>
+
+
+                            <strong>
+                                @severity.Count
+                            </strong>
+
+                        </div>
+                    }
+
+                </div>
+
+            </section>
+            <section class="dashboard-panel">
+
+                <div class="panel-header">
+
+                    <div class="panel-title-group">
+
+                        <h2 class="panel-title">
+                            Remediation Status
+                        </h2>
+
+                        <span class="panel-description">
+                            Current remediation workflow status.
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="panel-body">
+
+                    @foreach (var item in Model.RemediationStatus)
+                    {
+                        <div class="remediation-row">
+
+                            <span>
+                                @item.Label
+                            </span>
+
+                            <strong>
+                                @item.Count
+                            </strong>
+
+                        </div>
+                    }
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <section class="dashboard-panel dashboard-panel-spacing">
+
+            <div class="panel-header">
+
+                <div class="panel-title-group">
+
+                    <h2 class="panel-title">
+                        Recent Findings
+                    </h2>
+
+                    <span class="panel-description">
+                        Recently detected or manually recorded security findings.
+                    </span>
+
+                </div>
+
+                <a asp-controller="Finding"
+                   asp-action="Index"
+                   class="panel-action">
+
+                    View All
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+            @if (!Model.RecentFindings.Any())
+            {
+                <div class="empty-state">
+
+                    <i class="bi bi-exclamation-triangle"></i>
+
+                    <strong>
+                        No findings available
+                    </strong>
+
+                    <span>
+                        Findings will appear here after an assessment
+                        produces scanner results.
+                    </span>
+
+                </div>
+            }
+            else
+            {
+                <div class="dashboard-list">
+
+                    @foreach (var finding in Model.RecentFindings)
+                    {
+                        <a asp-controller="Finding"
+                           asp-action="Details"
+                           asp-route-id="@finding.FindingID"
+                           class="dashboard-list-item text-decoration-none">
+
+                            <div>
+
+                                <div class="d-flex align-items-center gap-2">
+
+                                    <span class="severity-dot
+                                                     severity-@finding.SeverityCode.ToLowerInvariant()">
+                                    </span>
+
+                                    <strong>
+                                        @finding.Title
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="text-muted small mt-1">
+
+                                    @finding.AssessmentCode
+                                    ·
+                                    @finding.TargetValue
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="text-end">
+
+                                <div>
+                                    @finding.FindingStatusName
+                                </div>
+
+                                <div class="text-muted small">
+                                    @finding.CreatedDate.ToString(
+                                    "MMM dd, yyyy")
+                        </div>
+
+                    </div>
+
+                </a>
+                                }
+
+                </div>
+            }
+
+
+        </section>
+
+        <section class="dashboard-panel dashboard-panel-spacing">
+
+            <div class="panel-header">
+
+                <div class="panel-title-group">
+
+                    <h2 class="panel-title">
+                        Active & Recent Scan Jobs
+                    </h2>
+
+                    <span class="panel-description">
+                        Status of scanner jobs associated with approved assessments.
+                    </span>
+
+                </div>
+
+                <a asp-controller="ScanJob"
+                   asp-action="Index"
+                   class="panel-action">
+
+                    View All
+                    <i class="bi bi-arrow-right ms-1"></i>
+
+                </a>
+
+            </div>
+
+            @if (!Model.RecentScanJobs.Any())
+            {
+                <div class="empty-state">
+
+                    <i class="bi bi-fingerprint"></i>
+
+                    <strong>
+                        No scan jobs available
+                    </strong>
+
+                    <span>
+                        Scan jobs will appear here when approved targets
+                        are submitted for scanning.
+                    </span>
+
+                </div>
+            }
+            else
+            {
+                <div class="dashboard-list">
+
+                    @foreach (var job in Model.RecentScanJobs)
+                    {
+                        <a asp-controller="ScanJob"
+                           asp-action="Details"
+                           asp-route-id="@job.ScanJobID"
+                           class="dashboard-list-item text-decoration-none">
+
+                            <div>
+
+                                <strong>
+                                    @job.JobCode
+                                </strong>
+
+
+                                <div class="text-muted small mt-1">
+
+                                    @job.ScanJobPurposeCode
+                                    ·
+                                    @job.ScannerTypeCode
+
+                                </div>
+
+                                <div class="text-muted small">
+                                    @job.TargetValue
+                                </div>
+
+                            </div>
+
+
+                            <div class="text-end">
+
+                                <div>
+                                    @job.ScanJobStatusName
+                                </div>
+
+                                <div class="text-muted small">
+                                    @job.RequestedDate.ToString(
+                                    "MMM dd, HH:mm")
+                        </div>
+
+                    </div>
+
+                </a>
+                                }
+
+                </div>
+            }
+
+        </section>
+
+
+    </div>
+
+</div>
+
+

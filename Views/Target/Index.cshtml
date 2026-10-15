@@ -1,0 +1,172 @@
+﻿@model IEnumerable<EVOLVE_VAPT.ViewModels.Target.AssessmentTargetListViewModel>
+
+@{
+    ViewData["Title"] = "Targets & Scope";
+
+    var assessmentId =
+        (int)ViewData["AssessmentID"]!;
+
+    var assessmentCode =
+        ViewData["AssessmentCode"]?.ToString();
+
+    var assessmentName =
+        ViewData["AssessmentName"]?.ToString();
+}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Targets & Scope
+        </h1>
+
+        <p class="page-description">
+            @assessmentCode — @assessmentName
+        </p>
+
+    </div>
+
+
+    <div class="d-flex gap-2">
+
+        <a asp-controller="Assessment"
+           asp-action="Details"
+           asp-route-id="@assessmentId"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-1"></i>
+
+            Back to Assessment
+
+        </a>
+
+
+        <a asp-controller="Target"
+           asp-action="Create"
+           asp-route-assessmentId="@assessmentId"
+           class="btn btn-primary">
+
+            <i class="bi bi-plus-lg me-1"></i>
+
+            Add Target
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<section class="dashboard-panel">
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+
+            <div class="empty-state-icon">
+                <i class="bi bi-bullseye"></i>
+            </div>
+
+            <h3 class="empty-state-title">
+                No targets configured
+            </h3>
+
+            <p class="empty-state-description">
+                Add an authorized target to define what systems
+                may be included in this assessment.
+            </p>
+
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+
+            <table class="table align-middle mb-0">
+
+                <thead>
+                    <tr>
+                        <th>Target</th>
+                        <th>Type</th>
+                        <th>Authorization</th>
+                        <th>Reference</th>
+                        <th>Valid From</th>
+                        <th>Valid Until</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+
+                                <div class="fw-semibold">
+                                    @item.TargetName
+                                </div>
+
+                                <div class="text-muted small">
+                                    @item.TargetValue
+                                </div>
+
+                            </td>
+
+
+                            <td>
+                                @item.TargetTypeName
+                            </td>
+
+
+                            <td>
+                                @item.AuthorizationStatusName
+                            </td>
+
+
+                            <td>
+                                @(item.AuthorizationReference ?? "-")
+                            </td>
+
+
+                            <td>
+                                @(item.AuthorizationValidFrom
+                                                        ?.ToString("MMM dd, yyyy")
+                                                        ?? "-")
+                                                           </td>
+
+
+                            <td>
+                                @(item.AuthorizationValidUntil
+                                                        ?.ToString("MMM dd, yyyy")
+                                                        ?? "-")
+                    </td>
+
+
+                            <td class="text-end">
+
+                                <a asp-controller="Target"
+                                   asp-action="Details"
+                                   asp-route-id="@item.AssessmentTargetID"
+                                   class="btn btn-sm btn-outline-secondary">
+
+                                    View
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                                }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+
+</section>

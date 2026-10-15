@@ -1,0 +1,118 @@
+﻿@model IEnumerable<EVOLVE_VAPT.ViewModels.Finding.FindingListViewModel>
+
+@{
+    ViewData["Title"] = "Findings";
+}
+
+<div class="page-header">
+
+    <div>
+        <h1 class="page-title">
+            Findings
+        </h1>
+
+        <p class="page-description">
+            Vulnerabilities discovered and normalized from scanner results.
+        </p>
+    </div>
+
+</div>
+
+
+<section class="dashboard-panel">
+
+    <div class="panel-body">
+
+        @if (!Model.Any())
+        {
+            <div class="text-muted">
+                No findings are currently available.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Severity</th>
+                            <th>Finding</th>
+                            <th>Target</th>
+                            <th>Assessment</th>
+                            <th>Scanner</th>
+                            <th>Status</th>
+                            <th>Detected</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var finding in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        @finding.SeverityName
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        @finding.Title
+                                    </strong>
+
+                                    <div class="text-muted small">
+                                        @finding.JobCode
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @finding.TargetValue
+                                </td>
+
+                                <td>
+                                    @finding.AssessmentCode
+                                </td>
+
+                                <td>
+                                    @finding.ScannerTypeCode
+                                </td>
+
+                                <td>
+                                    @finding.FindingStatusName
+                                </td>
+
+                                <td>
+                                    @finding.CreatedDate.ToString(
+                                    "MMM dd, yyyy hh:mm tt")
+                        </td>
+
+                        <td class="text-end">
+
+                            <a asp-action="Details"
+                               asp-route-id="@finding.FindingID"
+                               class="btn btn-sm btn-outline-secondary">
+
+                                View
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+                                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+
+    </div>
+
+</section>

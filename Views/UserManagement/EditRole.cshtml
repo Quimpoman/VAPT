@@ -1,0 +1,98 @@
+﻿@model EVOLVE_VAPT.ViewModels.Administration.UserRoleEditViewModel
+
+@{
+    ViewData["Title"] = "Edit User Role";
+}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Edit User Role
+        </h1>
+
+        <p class="page-description">
+            Change the application role assigned
+            to @Model.Email.
+        </p>
+
+    </div>
+
+</div>
+
+
+<section class="dashboard-panel">
+
+    <div class="panel-body">
+
+        <form asp-action="EditRole"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input asp-for="UserID"
+                   type="hidden" />
+
+            <input asp-for="Email"
+                   type="hidden" />
+
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+
+            <div class="mb-3">
+
+                <label asp-for="SelectedRole"
+                       class="form-label">
+                </label>
+
+                <select asp-for="SelectedRole"
+                        class="form-select">
+
+                    @foreach (
+                                        var role
+                                        in Model.AvailableRoles)
+                    {
+                        <option value="@role">
+                            @role
+                        </option>
+                    }
+
+                </select>
+
+                <span asp-validation-for="SelectedRole"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <div class="d-flex gap-2">
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Save Role
+
+                </button>
+
+
+                <a asp-action="Details"
+                   asp-route-id="@Model.UserID"
+                   class="btn btn-outline-secondary">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>

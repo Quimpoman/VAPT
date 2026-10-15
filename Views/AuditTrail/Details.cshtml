@@ -1,0 +1,371 @@
+﻿@using System.Text.Json
+@model EVOLVE_VAPT.ViewModels.AuditTrail.AuditTrailDetailsViewModel
+
+@{
+    ViewData["Title"] = "Audit Event Details";
+
+
+    string FormatJson(string? json)
+    {
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            return "-";
+        }
+
+        try
+        {
+            using var document =
+                JsonDocument.Parse(json);
+
+            return JsonSerializer.Serialize(
+                document.RootElement,
+                new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                });
+        }
+        catch
+        {
+            /*
+             * Historical records may not necessarily
+             * contain valid JSON.
+             */
+            return json;
+        }
+    }
+}
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Audit Event Details
+        </h1>
+
+        <p class="page-description">
+            Complete recorded context for audit event
+            #@Model.AuditTrailID.
+        </p>
+
+    </div>
+
+
+    <div>
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-1"></i>
+
+            Back
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+    <!-- EVENT -->
+    <section class="dashboard-panel">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Event
+                </h2>
+
+                <span class="panel-description">
+                    Recorded action and result.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Date / Time
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.CreatedDate.ToString("MMM dd, yyyy hh:mm:ss tt")
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Result
+                    </span>
+
+                    <span class="detail-value">
+
+                        @if (Model.IsSuccessful)
+                        {
+                            <span class="badge bg-success">
+                                Success
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">
+                                Failed
+                            </span>
+                        }
+
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Module
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.Module
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Action
+                    </span>
+
+                    <span class="detail-value">
+                        <code>@Model.ActionType</code>
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item detail-item-full">
+
+                    <span class="detail-label">
+                        Description
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.Description ?? "-")
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ACTOR / REQUEST -->
+    <section class="dashboard-panel">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Actor & Request
+                </h2>
+
+                <span class="panel-description">
+                    User and request information associated
+                    with this event.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        User
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.UserName ?? "System")
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        User ID
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.UserID ?? "-")
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        IP Address
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.IPAddress ?? "-")
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Request Path
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.RequestPath ?? "-")
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<section class="dashboard-panel dashboard-panel-spacing">
+
+    <div class="panel-header">
+
+        <div class="panel-title-group">
+
+            <h2 class="panel-title">
+                Affected Record
+            </h2>
+
+            <span class="panel-description">
+                Database record associated with the
+                recorded action.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <div class="detail-grid">
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+                    Table
+                </span>
+
+                <span class="detail-value">
+                    @(Model.TableName ?? "-")
+                </span>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+                    Record ID
+                </span>
+
+                <span class="detail-value">
+                    @(Model.RecordID ?? "-")
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="dashboard-panel dashboard-panel-spacing">
+
+    <div class="panel-header">
+
+        <div class="panel-title-group">
+
+            <h2 class="panel-title">
+                Data Changes
+            </h2>
+
+            <span class="panel-description">
+                Values captured before and after the
+                recorded operation.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <div class="row g-3">
+
+            <div class="col-lg-6">
+
+                <label class="form-label">
+                    Old Values
+                </label>
+
+                <pre class="p-3 border rounded bg-light"
+                     style="white-space: pre-wrap;">@FormatJson(Model.OldValues)</pre>
+
+            </div>
+
+
+            <div class="col-lg-6">
+
+                <label class="form-label">
+                    New Values
+                </label>
+
+                <pre class="p-3 border rounded bg-light"
+                     style="white-space: pre-wrap;">@FormatJson(Model.NewValues)</pre>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

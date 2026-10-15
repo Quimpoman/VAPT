@@ -1,0 +1,141 @@
+﻿@model IEnumerable<EVOLVE_VAPT.ViewModels.Assessment.AssessmentListViewModel>
+
+@{
+    ViewData["Title"] = "Assessments";
+}
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Assessments
+        </h1>
+
+        <p class="page-description">
+            Manage vulnerability assessment projects
+            and their lifecycle.
+        </p>
+
+    </div>
+
+    <div>
+
+        <a asp-controller="Assessment"
+           asp-action="Create"
+           class="btn btn-primary">
+
+            <i class="bi bi-plus-lg me-1"></i>
+
+            New Assessment
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<section class="dashboard-panel">
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+
+            <div class="empty-state-icon">
+                <i class="bi bi-clipboard2-check"></i>
+            </div>
+
+            <h3 class="empty-state-title">
+                No assessments available
+            </h3>
+
+            <p class="empty-state-description">
+                Create your first assessment to begin
+                defining authorized targets and security
+                testing activities.
+            </p>
+
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+
+            <table class="table align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+                        <th>Assessment Code</th>
+                        <th>Assessment Name</th>
+                        <th>Status</th>
+                        <th>Environment</th>
+                        <th>Planned Start</th>
+                        <th>Planned End</th>
+                        <th>Owner</th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @item.AssessmentCode
+                            </td>
+
+                            <td>
+                                @item.AssessmentName
+                            </td>
+
+                            <td>
+                                @item.AssessmentStatusName
+                            </td>
+
+                            <td>
+                                @(item.Environment ?? "-")
+                            </td>
+
+                            <td>
+                                @(item.PlannedStartDate
+                                                        ?.ToString("MMM dd, yyyy") ?? "-")
+                                                                                      </td>
+
+                            <td>
+                                @(item.PlannedEndDate
+                                                        ?.ToString("MMM dd, yyyy") ?? "-")
+                    </td>
+
+                            <td>
+                                @(item.OwnerEmail ?? "-")
+                            </td>
+
+                            <td class="text-end">
+
+                                <a asp-controller="Assessment"
+                                   asp-action="Details"
+                                   asp-route-id="@item.AssessmentID"
+                                   class="btn btn-sm btn-outline-secondary">
+
+                                    View
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                                }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+
+</section>

@@ -1,0 +1,101 @@
+﻿@model EVOLVE_VAPT.ViewModels.Account.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_AuthLayout";
+}
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <div class="auth-header">
+
+            <div class="auth-logo">
+                <i class="bi bi-shield-lock-fill"></i>
+            </div>
+
+            <h1>EVOLVE VAPT</h1>
+
+            <p>
+                Vulnerability Assessment and Penetration Testing Platform
+            </p>
+
+        </div>
+
+        <form asp-controller="Account"
+              asp-action="Login"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden"
+                   name="returnUrl"
+                   value="@ViewData["ReturnUrl"]" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="Email"
+                       class="form-label">
+                </label>
+
+                <input asp-for="Email"
+                       class="form-control"
+                       placeholder="Enter your email" />
+
+                <span asp-validation-for="Email"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="Password"
+                       class="form-label">
+                </label>
+
+                <input asp-for="Password"
+                       class="form-control"
+                       placeholder="Enter your password" />
+
+                <span asp-validation-for="Password"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="form-check mb-4">
+
+                <input asp-for="RememberMe"
+                       class="form-check-input" />
+
+                <label asp-for="RememberMe"
+                       class="form-check-label">
+                    Remember me
+                </label>
+
+            </div>
+
+            <button type="submit"
+                    class="btn auth-button">
+
+                Sign In
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

@@ -1,0 +1,254 @@
+﻿@using EVOLVE_VAPT.Security
+
+@{
+    var currentController =
+        ViewContext.RouteData.Values["controller"]?.ToString();
+
+    var currentAction =
+        ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<aside class="app-sidebar">
+
+    <div class="sidebar-brand">
+
+        <div class="brand-logo">
+            <i class="bi bi-shield-lock-fill"></i>
+        </div>
+
+        <div class="brand-text">
+            <span class="brand-title">
+                EVOLVE VAPT
+            </span>
+
+            <span class="brand-subtitle">
+                Security Platform
+            </span>
+        </div>
+
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+        <!-- DASHBOARD -->
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="sidebar-link @(currentController == "Home" ? "active" : "")">
+
+            <i class="bi bi-grid"></i>
+
+            <span>Dashboard</span>
+
+        </a>
+
+
+        <!-- ASSESSMENTS -->
+
+        <div class="sidebar-section-title">
+            Assessments
+        </div>
+
+        <div class="nav-group">
+
+            <button type="button"
+                    class="sidebar-link sidebar-group-toggle"
+                    data-sidebar-toggle="assessment-menu">
+
+                <i class="bi bi-clipboard2-check"></i>
+
+                <span>Assessment Management</span>
+
+                <i class="bi bi-chevron-down sidebar-chevron"></i>
+
+            </button>
+
+            <div class="sidebar-submenu"
+                 id="assessment-menu">
+
+                <a asp-controller="Assessment"
+                   asp-action="Index"
+                   class="sidebar-sublink">
+
+                    Projects / Assessments
+
+                </a>
+
+             @*    <a href="#"
+                   class="sidebar-sublink">
+                    Targets & Scope
+                </a>
+
+                <a href="#"
+                   class="sidebar-sublink">
+                    Scan Profiles
+                </a> *@
+
+            </div>
+
+        </div>
+
+
+        <!-- SCANNING -->
+
+        <div class="sidebar-section-title">
+            Scanning
+        </div>
+
+        <div class="nav-group">
+
+            <button type="button"
+                    class="sidebar-link sidebar-group-toggle"
+                    data-sidebar-toggle="scanning-menu">
+
+                <i class="bi bi-radar"></i>
+
+                <span>Scanning</span>
+
+                <i class="bi bi-chevron-down sidebar-chevron"></i>
+
+            </button>
+
+            <div class="sidebar-submenu"
+                 id="scanning-menu">
+
+               
+                <a asp-controller="ScanProfile"
+                       asp-action="Index"
+                       class="sidebar-sublink">
+                    Scan Jobs
+                </a>
+
+                <a asp-controller="ScanJob"
+                   asp-action="Index"
+                   class="sidebar-sublink">
+                    Scanner Manager
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- FINDINGS -->
+
+        <div class="sidebar-section-title">
+            Findings
+        </div>
+
+        <div class="nav-group">
+
+            <button type="button"
+                    class="sidebar-link sidebar-group-toggle"
+                    data-sidebar-toggle="findings-menu">
+
+                <i class="bi bi-exclamation-triangle"></i>
+
+                <span>Findings Management</span>
+
+                <i class="bi bi-chevron-down sidebar-chevron"></i>
+
+            </button>
+
+            <div class="sidebar-submenu"
+                 id="findings-menu">
+
+                <a asp-controller="Finding"
+                   asp-action="Index"
+                   class="sidebar-sublink">
+                    Findings
+                </a>
+
+                @* <a href="#"
+                   class="sidebar-sublink">
+                    Evidence
+                </a> *@
+
+                <a asp-controller="Remediation"
+                   asp-action="Index"
+                   class="sidebar-sublink">
+
+                    Remediation
+
+                </a>
+
+                <a asp-controller="Retest"
+                   asp-action="Index"
+                   class="sidebar-sublink">
+
+                    Retesting
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- REPORTING -->
+
+        <div class="sidebar-section-title">
+            Reporting
+        </div>
+
+        <a asp-controller="Report"
+           asp-action="Index"
+           class="sidebar-link">
+
+            <i class="bi bi-file-earmark-bar-graph"></i>
+
+            <span>Reports</span>
+
+        </a>
+
+
+        <!-- ADMINISTRATION -->
+        @if (User.IsInRole(AppRoles.Administrator))
+        {
+            <div class="sidebar-section-title">
+                Administration
+            </div>
+
+            @if (User.IsInRole(
+                    AppRoles.Administrator))
+            {
+                <a asp-controller="UserManagement"
+                   asp-action="Index"
+                   class="sidebar-link">
+                    
+
+                    <i class="bi bi-people"></i>
+
+                    Users & Roles
+
+                </a>
+            }
+
+            @if (User.IsInRole(AppRoles.Administrator) ||
+                    User.IsInRole(AppRoles.Reviewer))
+            {
+                <a asp-controller="AuditTrail"
+                   asp-action="Index"
+                   class="sidebar-link">
+
+                    <i class="bi bi-clock-history"></i>
+
+                    Audit Trail
+
+                </a>
+            }
+
+            @* <a href="#"
+               class="sidebar-link">
+
+                <i class="bi bi-gear"></i>
+
+                <span>System Settings</span>
+
+            </a> *@
+        }
+
+    </nav>
+
+</aside>

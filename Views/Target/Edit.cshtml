@@ -1,0 +1,115 @@
+﻿@model EVOLVE_VAPT.ViewModels.Target.TargetFormViewModel
+
+@{
+    ViewData["Title"] = "Edit Target";
+}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Edit Target
+        </h1>
+
+        <p class="page-description">
+            Modify target and authorization information.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="alert alert-warning">
+
+    <i class="bi bi-shield-exclamation me-2"></i>
+
+    Changes to the target address, target type,
+    authorization reference, or authorization validity
+    period may require the target to be approved again.
+
+</div>
+
+
+<form asp-action="Edit"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+
+    <!--
+        Preserve the Assessment Target identity.
+        These values are not editable by the user.
+    -->
+    <input asp-for="AssessmentTargetID"
+           type="hidden" />
+
+    <input asp-for="AssessmentID"
+           type="hidden" />
+
+
+    <div asp-validation-summary="ModelOnly"
+         class="alert alert-danger">
+    </div>
+
+
+    <section class="dashboard-panel dashboard-panel-spacing">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Target Information
+                </h2>
+
+                <span class="panel-description">
+                    Update the selected target.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <partial name="_TargetForm"
+                     model="Model" />
+
+        </div>
+
+    </section>
+
+
+    <div class="d-flex justify-content-end gap-2">
+
+        <a asp-action="Details"
+           asp-route-id="@Model.AssessmentTargetID"
+           class="btn btn-outline-secondary">
+
+            Cancel
+
+        </a>
+
+
+        <button type="submit"
+                class="btn btn-primary">
+
+            <i class="bi bi-check-lg me-1"></i>
+
+            Save Changes
+
+        </button>
+
+    </div>
+
+</form>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

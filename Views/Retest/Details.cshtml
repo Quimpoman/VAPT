@@ -1,0 +1,401 @@
+﻿@using EVOLVE_VAPT.Security
+@model EVOLVE_VAPT.ViewModels.Retest.RetestDetailsViewModel
+
+@{
+    ViewData["Title"] = "Retest Details";
+
+    var canReview =
+        User.IsInRole(AppRoles.Administrator) ||
+        User.IsInRole(AppRoles.SecurityAnalyst) ||
+        User.IsInRole(AppRoles.Reviewer);
+}
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            @Model.FindingTitle
+        </h1>
+
+        <p class="page-description">
+            Retest Cycle @Model.CycleNo
+        </p>
+
+    </div>
+
+
+    <a asp-action="Index"
+       class="btn btn-outline-secondary">
+
+        <i class="bi bi-arrow-left me-1"></i>
+        Back
+
+    </a>
+
+</div>
+<section class="dashboard-panel">
+
+    <div class="panel-body">
+
+        <div class="detail-grid">
+
+            <div class="detail-item">
+                <span class="detail-label">
+                    Retest Status
+                </span>
+
+                <span class="detail-value">
+                    @Model.RetestStatusName
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="detail-label">
+                    Outcome
+                </span>
+
+                <span class="detail-value">
+                    @(Model.RetestOutcomeName ?? "-")
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="detail-label">
+                    Severity
+                </span>
+
+                <span class="detail-value">
+                    @Model.SeverityName
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="detail-label">
+                    Target
+                </span>
+
+                <span class="detail-value">
+                    @Model.TargetValue
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="detail-label">
+                    Original Scan
+                </span>
+
+                <span class="detail-value">
+                    @Model.OriginalJobCode
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="detail-label">
+                    Retest Scan
+                </span>
+
+                <span class="detail-value">
+                    @(Model.RetestJobCode ?? "-")
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="detail-label">
+                    Scan Status
+                </span>
+
+                <span class="detail-value">
+                    @(Model.ScanJobStatusName ?? "-")
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<section class="dashboard-panel dashboard-panel-spacing">
+
+    <div class="panel-header">
+        <h2 class="panel-title">
+            Original Finding
+        </h2>
+    </div>
+
+
+    <div class="panel-body">
+
+        <strong>Description</strong>
+
+        <div class="mt-1 mb-3">
+            @(Model.FindingDescription ?? "-")
+        </div>
+
+
+        <strong>Original Evidence</strong>
+
+        <pre class="mt-1 mb-3 text-wrap">@(Model.OriginalEvidence ?? "-")</pre>
+
+
+        <strong>Recommendation</strong>
+
+        <div class="mt-1">
+            @(Model.Recommendation ?? "-")
+        </div>
+
+    </div>
+
+</section>
+<section class="dashboard-panel dashboard-panel-spacing">
+
+    <div class="panel-header">
+        <h2 class="panel-title">
+            Remediation
+        </h2>
+    </div>
+
+
+    <div class="panel-body">
+
+        <strong>Remediation Notes</strong>
+
+        <div class="mt-1 mb-3">
+            @(Model.RemediationNotes ?? "-")
+        </div>
+
+
+        <strong>Submission Notes</strong>
+
+        <div class="mt-1">
+            @(Model.SubmissionNotes ?? "-")
+        </div>
+
+    </div>
+
+</section>
+<section class="dashboard-panel dashboard-panel-spacing">
+
+    <div class="panel-header">
+
+        <div class="panel-title-group">
+
+            <h2 class="panel-title">
+                Retest Scan Evidence
+            </h2>
+
+            <span class="panel-description">
+                Raw output preserved from the verification scan.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        @if (!string.IsNullOrWhiteSpace(
+                Model.ScanErrorMessage))
+        {
+            <div class="alert alert-warning">
+
+                <strong>Scanner Error:</strong>
+
+                @Model.ScanErrorMessage
+
+            </div>
+        }
+
+
+        @if (!string.IsNullOrWhiteSpace(
+                Model.RawOutput))
+        {
+            <pre class="border rounded p-3 text-wrap"
+                 style="max-height: 500px; overflow:auto;">@Model.RawOutput</pre>
+        }
+        else
+        {
+            <div class="text-muted">
+                No raw Retest result is available.
+            </div>
+        }
+
+    </div>
+
+</section>
+@if (canReview &&
+     Model.RetestStatusCode ==
+        "AWAITING_REVIEW")
+{
+    <section class="dashboard-panel dashboard-panel-spacing">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Analyst Retest Decision
+                </h2>
+
+                <span class="panel-description">
+                    Compare the original finding, remediation work,
+                    and Retest evidence before selecting an outcome.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <form asp-action="Review"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       name="FindingRetestID"
+                       value="@Model.FindingRetestID" />
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Outcome
+                    </label>
+
+                    <select name="RetestOutcomeID"
+                            class="form-select"
+                            required>
+
+                        <option value="">
+                            -- Select Outcome --
+                        </option>
+
+                        @foreach (
+                                            var outcome in
+                                            (IEnumerable<dynamic>)
+                                            ViewBag.OutcomeOptions)
+                        {
+                            <option value="@outcome.Value">
+                                @outcome.Text
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Review Notes
+                    </label>
+
+                    <textarea name="ReviewNotes"
+                          class="form-control"
+                          rows="5"
+                          maxlength="2000"
+                          required></textarea>
+
+                </div>
+
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Complete Retest Review
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+}
+@if (Model.RetestStatusCode == "COMPLETED")
+{
+    <section class="dashboard-panel dashboard-panel-spacing">
+
+        <div class="panel-header">
+            <h2 class="panel-title">
+                Retest Review
+            </h2>
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Outcome
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.RetestOutcomeName ?? "-")
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Reviewed By
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.ReviewedByEmail ?? "-")
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Reviewed
+                    </span>
+
+                    <span class="detail-value">
+
+                        @(Model.ReviewedDate.HasValue
+                                            ? Model.ReviewedDate.Value
+                                            .ToString("MMM dd, yyyy hh:mm tt")
+                                            : "-")
+
+                </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="mt-3">
+
+                <strong>
+                    Review Notes
+                </strong>
+
+                <div class="mt-1">
+                    @(Model.ReviewNotes ?? "-")
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+}

@@ -1,0 +1,84 @@
+﻿@model EVOLVE_VAPT.ViewModels.Target.TargetFormViewModel
+
+
+<div class="row g-3">
+
+    <!-- TARGET TYPE -->
+    <div class="col-md-4">
+
+        <label asp-for="TargetTypeID"
+               class="form-label">
+        </label>
+
+        <select asp-for="TargetTypeID"
+                asp-items="Model.TargetTypeOptions"
+                class="form-select">
+
+            <option value="">
+                Select target type
+            </option>
+
+        </select>
+
+        <span asp-validation-for="TargetTypeID"
+              class="text-danger">
+        </span>
+
+    </div>
+
+
+    <!-- TARGET NAME -->
+    <div class="col-md-8">
+
+        <label asp-for="TargetName"
+               class="form-label">
+        </label>
+
+        <input asp-for="TargetName"
+               class="form-control"
+               placeholder="e.g. Customer Portal" />
+
+        <span asp-validation-for="TargetName"
+              class="text-danger">
+        </span>
+
+    </div>
+
+
+    <!-- TARGET VALUE -->
+    <div class="col-12">
+
+        <label asp-for="TargetValue"
+               class="form-label">
+        </label>
+
+        <input asp-for="TargetValue"
+               class="form-control"
+               placeholder="e.g. https://example.com" />
+
+        <span asp-validation-for="TargetValue"
+              class="text-danger">
+        </span>
+
+    </div>
+
+
+    <!-- DESCRIPTION -->
+    <div class="col-12">
+
+        <label asp-for="Description"
+               class="form-label">
+        </label>
+
+        <textarea asp-for="Description"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Optional description of this target."></textarea>
+
+        <span asp-validation-for="Description"
+              class="text-danger">
+        </span>
+
+    </div>
+
+</div>

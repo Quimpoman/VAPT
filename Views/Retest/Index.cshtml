@@ -1,0 +1,117 @@
+﻿@model IEnumerable<EVOLVE_VAPT.ViewModels.Retest.RetestListViewModel>
+
+@{
+    ViewData["Title"] = "Retesting";
+}
+
+<div class="page-header">
+
+    <div>
+        <h1 class="page-title">
+            Retesting
+        </h1>
+
+        <p class="page-description">
+            Verification scans for remediated vulnerabilities.
+        </p>
+    </div>
+
+</div>
+
+
+<section class="dashboard-panel">
+
+    <div class="panel-body">
+
+        @if (!Model.Any())
+        {
+            <div class="text-muted">
+                No Retests are currently available.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Severity</th>
+                            <th>Finding</th>
+                            <th>Assessment</th>
+                            <th>Cycle</th>
+                            <th>Scan Job</th>
+                            <th>Retest Status</th>
+                            <th>Outcome</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @item.SeverityName
+                                </td>
+
+                                <td>
+                                    @item.FindingTitle
+                                </td>
+
+                                <td>
+                                    @item.AssessmentCode
+                                </td>
+
+                                <td>
+                                    @item.CycleNo
+                                </td>
+
+                                <td>
+                                    @(item.RetestJobCode ?? "-")
+
+                                    @if (!string.IsNullOrWhiteSpace(
+                                                                item.ScanJobStatusName))
+                                    {
+                                        <div class="text-muted small">
+                                            @item.ScanJobStatusName
+                                        </div>
+                                    }
+                                </td>
+
+                                <td>
+                                    @item.RetestStatusName
+                                </td>
+
+                                <td>
+                                    @(item.RetestOutcomeName ?? "-")
+                                </td>
+
+                                <td class="text-end">
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@item.FindingRetestID"
+                                       class="btn btn-sm btn-outline-secondary">
+
+                                        View
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+
+    </div>
+
+</section>

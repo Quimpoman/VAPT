@@ -1,0 +1,62 @@
+﻿@model EVOLVE_VAPT.ViewModels.Remediation.RemediationFormViewModel
+
+@{
+    ViewData["Title"] = "Start Remediation";
+}
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Start Remediation
+        </h1>
+
+        <p class="page-description">
+            @Model.FindingTitle
+        </p>
+
+    </div>
+
+</div>
+
+
+<section class="dashboard-panel">
+
+    <div class="panel-body">
+
+        <form asp-action="Create"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <partial name="_RemediationForm"
+                     model="Model" />
+
+
+            <div class="d-flex gap-2">
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Start Remediation
+
+                </button>
+
+
+                <a asp-controller="Finding"
+                   asp-action="Details"
+                   asp-route-id="@Model.FindingID"
+                   class="btn btn-outline-secondary">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>

@@ -1,0 +1,153 @@
+﻿@model EVOLVE_VAPT.ViewModels.ScanJob.ScanJobCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Scan Job";
+}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Create Scan Job
+        </h1>
+
+        <p class="page-description">
+            Request a governed scan against an
+            approved target and scope.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="alert alert-info">
+
+    <i class="bi bi-shield-check me-2"></i>
+
+    EVOLVE_VAPT will verify target authorization,
+    authorization dates, active scope rules and
+    Scan Profile configuration before creating the job.
+
+</div>
+
+
+<form asp-action="Create"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+
+    <div asp-validation-summary="ModelOnly"
+         class="alert alert-danger">
+    </div>
+
+
+    <section class="dashboard-panel">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Scan Request
+                </h2>
+
+                <span class="panel-description">
+                    Choose the approved target and
+                    controlled Scan Profile.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="row g-3">
+
+
+                <div class="col-12">
+
+                    <label asp-for="AssessmentTargetID"
+                           class="form-label">
+                    </label>
+
+                    <select asp-for="AssessmentTargetID"
+                            asp-items="Model.TargetOptions"
+                            class="form-select">
+
+                        <option value="">
+                            Select approved target
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="AssessmentTargetID"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-12">
+
+                    <label asp-for="ScanProfileID"
+                           class="form-label">
+                    </label>
+
+                    <select asp-for="ScanProfileID"
+                            asp-items="Model.ScanProfileOptions"
+                            class="form-select">
+
+                        <option value="">
+                            Select Scan Profile
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="ScanProfileID"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="d-flex justify-content-end gap-2 mt-3">
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+
+            Cancel
+
+        </a>
+
+
+        <button type="submit"
+                class="btn btn-primary">
+
+            <i class="bi bi-play-circle me-1"></i>
+
+            Create Scan Job
+
+        </button>
+
+    </div>
+
+</form>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

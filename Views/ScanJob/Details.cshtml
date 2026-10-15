@@ -1,0 +1,586 @@
+﻿@using EVOLVE_VAPT.Security
+@model EVOLVE_VAPT.ViewModels.ScanJob.ScanJobDetailsViewModel
+
+@{
+    ViewData["Title"] = "Scan Job Details";
+}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            @Model.JobCode
+        </h1>
+
+        <p class="page-description">
+            @Model.TargetValue
+        </p>
+
+    </div>
+
+
+    <a asp-action="Index"
+       class="btn btn-outline-secondary">
+
+        <i class="bi bi-arrow-left me-1"></i>
+        Back
+
+    </a>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+    <section class="dashboard-panel">
+
+        <div class="panel-header">
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Scan Request
+                </h2>
+
+                <span class="panel-description">
+                    Immutable request information.
+                </span>
+
+            </div>
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Status
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.ScanJobStatusName
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Scanner
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.ScannerTypeCode
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Assessment
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.AssessmentCode -
+                        @Model.AssessmentName
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Target Type
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.TargetTypeCode
+                    </span>
+                </div>
+
+
+                <div class="detail-item detail-item-full">
+                    <span class="detail-label">
+                        Target Snapshot
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.TargetValue
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Scan Profile
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.ScanProfileName
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Profile Code
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.ScanProfileCode
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="dashboard-panel">
+
+        <div class="panel-header">
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Job Timeline
+                </h2>
+
+            </div>
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Requested By
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.RequestedByEmail ?? "-")
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Requested
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.RequestedDate.ToString(
+                        "MMM dd, yyyy hh:mm tt")
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Queued
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.QueuedDate.HasValue
+                                                ? Model.QueuedDate.Value.ToString(
+                                                "MMM dd, yyyy hh:mm tt")
+                                                : "-")
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Started
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.StartedDate.HasValue
+                                                ? Model.StartedDate.Value.ToString(
+                                                "MMM dd, yyyy hh:mm tt")
+                                                : "-")
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Completed
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.CompletedDate.HasValue
+                                                ? Model.CompletedDate.Value.ToString(
+                                                "MMM dd, yyyy hh:mm tt")
+                                                : "-")
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+<section class="dashboard-panel dashboard-panel-spacing">
+
+    <div class="panel-header">
+
+        <div class="panel-title-group">
+
+            <h2 class="panel-title">
+                Scope Snapshot
+            </h2>
+
+            <span class="panel-description">
+                Scope captured when this Scan Job was requested.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        @foreach (var rule in Model.ScopeRules)
+        {
+            <div class="border rounded p-3 mb-2">
+
+                <strong>
+                    @rule.RuleTypeCode
+                </strong>
+
+                <code class="ms-2">
+                    @rule.RuleValue
+                </code>
+
+                @if (!string.IsNullOrWhiteSpace(
+                            rule.Description))
+                {
+                    <div class="text-muted small mt-1">
+                        @rule.Description
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>
+<section class="dashboard-panel dashboard-panel-spacing">
+
+    <div class="panel-header">
+
+        <div class="panel-title-group">
+
+            <h2 class="panel-title">
+                Profile Options Snapshot
+            </h2>
+
+            <span class="panel-description">
+                Effective option values captured at job creation.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        @if (!Model.ProfileOptions.Any())
+        {
+            <div class="text-muted">
+                No scanner options were captured.
+            </div>
+        }
+        else
+        {
+            @foreach (var option in Model.ProfileOptions)
+            {
+                <div class="border rounded p-3 mb-2">
+
+                    <strong>
+                        @option.OptionName
+                    </strong>
+
+                    <div class="text-muted small">
+                        @option.OptionCode
+                    </div>
+
+                    <div class="mt-2">
+                        Value:
+                        <code>
+                            @(option.OptionValue ?? "-")
+                        </code>
+                    </div>
+
+                </div>
+            }
+        }
+
+    </div>
+
+</section>
+
+@if (Model.ScanJobStatusCode == "PENDING_APPROVAL" &&
+     (User.IsInRole(AppRoles.Administrator) ||
+      User.IsInRole(AppRoles.Reviewer)))
+{
+    <section class="dashboard-panel dashboard-panel-spacing">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Approval Decision
+                </h2>
+
+                <span class="panel-description">
+                    Review the captured target, scope and
+                    profile configuration before queueing.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <form asp-action="Approve"
+                  asp-route-id="@Model.ScanJobID"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+
+                <label class="form-label">
+                    Approval Notes
+                </label>
+
+                <textarea name="approvalNotes"
+                      class="form-control"
+                      rows="3"
+                      maxlength="1000"></textarea>
+
+
+                <div class="d-flex gap-2 mt-3">
+
+                    <button type="submit"
+                            class="btn btn-success">
+
+                        <i class="bi bi-check-circle me-1"></i>
+
+                        Approve & Queue
+
+                    </button>
+
+
+                    <button type="button"
+                            class="btn btn-outline-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#rejectJobModal">
+
+                        Reject
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+}
+@if (Model.ScanJobStatusCode == "PENDING_APPROVAL" &&
+     (User.IsInRole(AppRoles.Administrator) ||
+      User.IsInRole(AppRoles.Reviewer)))
+{
+    <div class="modal fade"
+         id="rejectJobModal"
+         tabindex="-1"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <form asp-action="Reject"
+                      asp-route-id="@Model.ScanJobID"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+
+                    <div class="modal-header">
+
+                        <h5 class="modal-title">
+                            Reject Scan Job
+                        </h5>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal">
+                        </button>
+
+                    </div>
+
+
+                    <div class="modal-body">
+
+                        <label class="form-label">
+                            Reason
+                        </label>
+
+                        <textarea name="reason"
+                              class="form-control"
+                              rows="3"
+                              maxlength="1000"
+                              required></textarea>
+
+                    </div>
+
+
+                    <div class="modal-footer">
+
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">
+
+                            Cancel
+
+                        </button>
+
+
+                        <button type="submit"
+                                class="btn btn-danger">
+
+                            Reject Job
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+@if ((Model.ScanJobStatusCode == "PENDING_APPROVAL" ||
+      Model.ScanJobStatusCode == "QUEUED") &&
+     (User.IsInRole(AppRoles.Administrator) ||
+      User.IsInRole(AppRoles.SecurityAnalyst)))
+{
+    <div class="mt-3">
+
+        <button type="button"
+                class="btn btn-outline-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#cancelJobModal">
+
+            <i class="bi bi-x-circle me-1"></i>
+
+            Cancel Scan Job
+
+        </button>
+
+    </div>
+}
+@if ((Model.ScanJobStatusCode == "PENDING_APPROVAL" ||
+      Model.ScanJobStatusCode == "QUEUED") &&
+     (User.IsInRole(AppRoles.Administrator) ||
+      User.IsInRole(AppRoles.SecurityAnalyst)))
+{
+    <div class="modal fade"
+         id="cancelJobModal"
+         tabindex="-1"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <form asp-action="Cancel"
+                      asp-route-id="@Model.ScanJobID"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+
+                    <div class="modal-header">
+
+                        <h5 class="modal-title">
+                            Cancel Scan Job
+                        </h5>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal">
+                        </button>
+
+                    </div>
+
+
+                    <div class="modal-body">
+
+                        <p>
+                            Cancel
+                            <strong>@Model.JobCode</strong>?
+                        </p>
+
+
+                        <label class="form-label">
+                            Reason
+                        </label>
+
+                        <textarea name="reason"
+                              class="form-control"
+                              rows="3"
+                              maxlength="1000"
+                              required></textarea>
+
+                    </div>
+
+
+                    <div class="modal-footer">
+
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">
+
+                            Back
+
+                        </button>
+
+
+                        <button type="submit"
+                                class="btn btn-danger">
+
+                            Cancel Job
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+}

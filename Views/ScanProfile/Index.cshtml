@@ -1,0 +1,194 @@
+﻿@using EVOLVE_VAPT.Security
+@model IEnumerable<EVOLVE_VAPT.ViewModels.ScanProfile.ScanProfileListViewModel>
+
+@{
+    ViewData["Title"] = "Scan Profiles";
+}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Scan Profiles
+        </h1>
+
+        <p class="page-description">
+            Controlled reusable scanner configurations
+            for approved VAPT activities.
+        </p>
+
+    </div>
+
+
+    @if (User.IsInRole(AppRoles.Administrator) ||
+        User.IsInRole(AppRoles.SecurityAnalyst))
+    {
+        <a asp-action="Create"
+           class="btn btn-primary">
+
+            <i class="bi bi-plus-lg me-1"></i>
+
+            New Scan Profile
+
+        </a>
+    }
+
+</div>
+
+
+<section class="dashboard-panel">
+
+    <div class="panel-header">
+
+        <div class="panel-title-group">
+
+            <h2 class="panel-title">
+                Active Profiles
+            </h2>
+
+            <span class="panel-description">
+                Profiles define controlled scanner behavior.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+
+            <div class="empty-state-icon">
+                <i class="bi bi-sliders"></i>
+            </div>
+
+            <h3 class="empty-state-title">
+                No Scan Profiles configured
+            </h3>
+
+            <p class="empty-state-description">
+                Create a profile before scan jobs
+                can use scanner configurations.
+            </p>
+
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+
+            <table class="table align-middle mb-0">
+
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Profile</th>
+                        <th>Scanner</th>
+                        <th>Intrusive</th>
+                        <th>Approval</th>
+                        <th>Timeout</th>
+                        <th>Concurrency</th>
+                        <th>Created By</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    @foreach (var profile in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                <code>@profile.ProfileCode</code>
+                            </td>
+
+
+                            <td>
+                                <strong>
+                                    @profile.ProfileName
+                                </strong>
+                            </td>
+
+
+                            <td>
+                                @profile.ScannerTypeName
+                            </td>
+
+
+                            <td>
+
+                                @if (profile.IsIntrusive)
+                                {
+                                    <span class="badge text-bg-danger">
+                                        Yes
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-secondary">
+                                        No
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <td>
+
+                                @if (profile.RequiresExplicitApproval)
+                                {
+                                    <span class="badge text-bg-warning">
+                                        Required
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-secondary">
+                                        Standard
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <td>
+                                @profile.TimeoutMinutes min
+                            </td>
+
+
+                            <td>
+                                @profile.MaxConcurrency
+                            </td>
+
+
+                            <td>
+                                @(profile.CreatedByEmail ?? "-")
+                            </td>
+                            <td class="text-end">
+
+                                <a asp-action="Details"
+                                   asp-route-id="@profile.ScanProfileID"
+                                   class="btn btn-sm btn-outline-secondary">
+
+                                    View
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+
+</section>

@@ -1,0 +1,223 @@
+﻿@model EVOLVE_VAPT.ViewModels.ScanProfile.ScanProfileFormViewModel
+
+@{
+    ViewData["Title"] = "Edit Scan Profile";
+}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Edit Scan Profile
+        </h1>
+
+        <p class="page-description">
+            Modify scanner profile configuration.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="alert alert-warning">
+
+    <i class="bi bi-exclamation-triangle me-2"></i>
+
+    Changing the scanner type will deactivate scanner
+    options configured for the previous scanner.
+
+</div>
+
+
+<form asp-action="Edit"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+    <input asp-for="ScanProfileID"
+           type="hidden" />
+
+
+    <div asp-validation-summary="ModelOnly"
+         class="alert alert-danger">
+    </div>
+
+
+    <section class="dashboard-panel">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Profile Information
+                </h2>
+
+                <span class="panel-description">
+                    Update controlled scanner configuration.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+
+                    <label asp-for="ScannerTypeID"
+                           class="form-label">
+                    </label>
+
+                    <select asp-for="ScannerTypeID"
+                            asp-items="Model.ScannerTypeOptions"
+                            class="form-select">
+
+                        <option value="">
+                            Select scanner
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <label asp-for="ProfileCode"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="ProfileCode"
+                           class="form-control" />
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <label asp-for="ProfileName"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="ProfileName"
+                           class="form-control" />
+
+                </div>
+
+
+                <div class="col-12">
+
+                    <label asp-for="Description"
+                           class="form-label">
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="3">
+                    </textarea>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="TimeoutMinutes"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="TimeoutMinutes"
+                           class="form-control" />
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="MaxConcurrency"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="MaxConcurrency"
+                           class="form-control" />
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="form-check mt-3">
+
+                        <input asp-for="IsIntrusive"
+                               class="form-check-input" />
+
+                        <label asp-for="IsIntrusive"
+                               class="form-check-label">
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="form-check mt-3">
+
+                        <input asp-for="RequiresExplicitApproval"
+                               class="form-check-input" />
+
+                        <label asp-for="RequiresExplicitApproval"
+                               class="form-check-label">
+                        </label>
+
+                        <span asp-validation-for="RequiresExplicitApproval"
+                              class="text-danger d-block">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="d-flex justify-content-end gap-2 mt-3">
+
+        <a asp-action="Details"
+           asp-route-id="@Model.ScanProfileID"
+           class="btn btn-outline-secondary">
+
+            Cancel
+
+        </a>
+
+
+        <button type="submit"
+                class="btn btn-primary">
+
+            <i class="bi bi-check-lg me-1"></i>
+
+            Save Changes
+
+        </button>
+
+    </div>
+
+</form>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

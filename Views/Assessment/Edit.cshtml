@@ -1,0 +1,97 @@
+﻿@model EVOLVE_VAPT.ViewModels.Assessment.AssessmentFormViewModel
+
+@{
+    ViewData["Title"] = "Edit Assessment";
+}
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Edit Assessment
+        </h1>
+
+        <p class="page-description">
+            Update assessment information and lifecycle details.
+        </p>
+
+    </div>
+
+</div>
+
+
+<form asp-action="Edit"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+
+    <input asp-for="AssessmentID"
+           type="hidden" />
+
+
+    <div asp-validation-summary="ModelOnly"
+         class="alert alert-danger">
+    </div>
+
+
+    <section class="dashboard-panel dashboard-panel-spacing">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Assessment Information
+                </h2>
+
+                <span class="panel-description">
+                    Modify the selected assessment.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <partial name="_AssessmentForm"
+                     model="Model" />
+
+        </div>
+
+    </section>
+
+
+    <div class="d-flex justify-content-end gap-2">
+
+        <a asp-action="Details"
+           asp-route-id="@Model.AssessmentID"
+           class="btn btn-outline-secondary">
+
+            Cancel
+
+        </a>
+
+
+        <button type="submit"
+                class="btn btn-primary">
+
+            <i class="bi bi-check-lg me-1"></i>
+
+            Save Changes
+
+        </button>
+
+    </div>
+
+</form>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

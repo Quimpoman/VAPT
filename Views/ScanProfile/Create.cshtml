@@ -1,0 +1,232 @@
+﻿@model EVOLVE_VAPT.ViewModels.ScanProfile.ScanProfileFormViewModel
+
+@{
+    ViewData["Title"] = "Create Scan Profile";
+}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Create Scan Profile
+        </h1>
+
+        <p class="page-description">
+            Define a controlled reusable scanner configuration.
+        </p>
+
+    </div>
+
+</div>
+
+
+<form asp-action="Create"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+
+    <div asp-validation-summary="ModelOnly"
+         class="alert alert-danger">
+    </div>
+
+
+    <section class="dashboard-panel">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Profile Information
+                </h2>
+
+                <span class="panel-description">
+                    Scanner options will be configured
+                    after the profile has been created.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="row g-3">
+
+
+                <div class="col-md-4">
+
+                    <label asp-for="ScannerTypeID"
+                           class="form-label">
+                    </label>
+
+                    <select asp-for="ScannerTypeID"
+                            asp-items="Model.ScannerTypeOptions"
+                            class="form-select">
+
+                        <option value="">
+                            Select scanner
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="ScannerTypeID"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <label asp-for="ProfileCode"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="ProfileCode"
+                           class="form-control" />
+
+                    <span asp-validation-for="ProfileCode"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <label asp-for="ProfileName"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="ProfileName"
+                           class="form-control" />
+
+                    <span asp-validation-for="ProfileName"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-12">
+
+                    <label asp-for="Description"
+                           class="form-label">
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="3">
+                    </textarea>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="TimeoutMinutes"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="TimeoutMinutes"
+                           class="form-control" />
+
+                    <span asp-validation-for="TimeoutMinutes"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="MaxConcurrency"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="MaxConcurrency"
+                           class="form-control" />
+
+                    <span asp-validation-for="MaxConcurrency"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="form-check mt-3">
+
+                        <input asp-for="IsIntrusive"
+                               class="form-check-input" />
+
+                        <label asp-for="IsIntrusive"
+                               class="form-check-label">
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="form-check mt-3">
+
+                        <input asp-for="RequiresExplicitApproval"
+                               class="form-check-input" />
+
+                        <label asp-for="RequiresExplicitApproval"
+                               class="form-check-label">
+                        </label>
+
+                        <span asp-validation-for="RequiresExplicitApproval"
+                              class="text-danger d-block">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="d-flex justify-content-end gap-2 mt-3">
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+
+            Cancel
+
+        </a>
+
+
+        <button type="submit"
+                class="btn btn-primary">
+
+            <i class="bi bi-check-lg me-1"></i>
+
+            Create Profile
+
+        </button>
+
+    </div>
+
+</form>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

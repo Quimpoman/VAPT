@@ -1,0 +1,282 @@
+﻿@model EVOLVE_VAPT.ViewModels.Target.TargetFormViewModel
+
+@{
+    ViewData["Title"] = "Add Target";
+
+    var assessmentCode =
+        ViewData["AssessmentCode"]?.ToString();
+
+    var assessmentName =
+        ViewData["AssessmentName"]?.ToString();
+}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Add Target
+        </h1>
+
+        <p class="page-description">
+            @assessmentCode — @assessmentName
+        </p>
+
+    </div>
+
+</div>
+
+
+<form asp-action="Create"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+
+    <!--
+        Preserve the parent Assessment ID.
+        The user does not manually choose an Assessment here.
+    -->
+    <input asp-for="AssessmentID"
+           type="hidden" />
+
+
+    <div asp-validation-summary="ModelOnly"
+         class="alert alert-danger">
+    </div>
+
+
+    <section class="dashboard-panel dashboard-panel-spacing">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Target Information
+                </h2>
+
+                <span class="panel-description">
+                    Define the system or endpoint that may
+                    become part of this assessment.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <partial name="_TargetForm"
+                     model="Model" />
+
+            @* <div class="row g-3">
+
+
+                <div class="col-md-4">
+
+                    <label asp-for="TargetTypeID"
+                           class="form-label">
+                    </label>
+
+                    <select asp-for="TargetTypeID"
+                            asp-items="Model.TargetTypeOptions"
+                            class="form-select">
+
+                        <option value="">
+                            Select target type
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="TargetTypeID"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-8">
+
+                    <label asp-for="TargetName"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="TargetName"
+                           class="form-control"
+                           placeholder="e.g. Customer Portal" />
+
+                    <span asp-validation-for="TargetName"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-12">
+
+                    <label asp-for="TargetValue"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="TargetValue"
+                           class="form-control"
+                           placeholder="e.g. https://example.com" />
+
+                    <span asp-validation-for="TargetValue"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-12">
+
+                    <label asp-for="Description"
+                           class="form-label">
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="3">
+                    </textarea>
+
+                </div>
+
+            </div> *@
+
+        </div>
+
+    </section>
+
+
+    <section class="dashboard-panel dashboard-panel-spacing">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Authorization Information
+                </h2>
+
+                <span class="panel-description">
+                    Record the documented authorization
+                    associated with this target.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="alert alert-warning">
+
+                <i class="bi bi-shield-exclamation me-2"></i>
+
+                Adding a target does not authorize scanning.
+                New targets are created with
+                <strong>Pending Approval</strong> status.
+
+            </div>
+
+
+            <div class="row g-3">
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="AuthorizationReference"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="AuthorizationReference"
+                           class="form-control"
+                           placeholder="e.g. LOA-2026-001" />
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <label asp-for="AuthorizationValidFrom"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="AuthorizationValidFrom"
+                           class="form-control" />
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <label asp-for="AuthorizationValidUntil"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="AuthorizationValidUntil"
+                           class="form-control" />
+
+                    <span asp-validation-for="AuthorizationValidUntil"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="col-12">
+
+                    <label asp-for="AuthorizationNotes"
+                           class="form-label">
+                    </label>
+
+                    <textarea asp-for="AuthorizationNotes"
+                              class="form-control"
+                              rows="3">
+                    </textarea>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="d-flex justify-content-end gap-2">
+
+        <a asp-action="Index"
+           asp-route-assessmentId="@Model.AssessmentID"
+           class="btn btn-outline-secondary">
+
+            Cancel
+
+        </a>
+
+
+        <button type="submit"
+                class="btn btn-primary">
+
+            <i class="bi bi-plus-lg me-1"></i>
+
+            Add Target
+
+        </button>
+
+    </div>
+
+</form>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

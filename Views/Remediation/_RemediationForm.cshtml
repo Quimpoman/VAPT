@@ -1,0 +1,72 @@
+﻿@model EVOLVE_VAPT.ViewModels.Remediation.RemediationFormViewModel
+
+<input asp-for="FindingID"
+       type="hidden" />
+
+@if (Model.FindingRemediationID.HasValue)
+{
+    <input asp-for="FindingRemediationID"
+           type="hidden" />
+}
+
+
+<div asp-validation-summary="ModelOnly"
+     class="text-danger mb-3">
+</div>
+
+
+<div class="mb-3">
+
+    <label class="form-label">
+        Finding
+    </label>
+
+    <input class="form-control"
+           value="@Model.FindingTitle"
+           disabled />
+
+</div>
+
+
+<div class="mb-3">
+
+    <label asp-for="AssignedToUserID"
+           class="form-label">
+    </label>
+
+    <select asp-for="AssignedToUserID"
+            asp-items="Model.UserOptions"
+            class="form-select">
+
+        <option value="">
+            -- Unassigned --
+        </option>
+
+    </select>
+
+</div>
+
+
+<div class="mb-3">
+
+    <label asp-for="TargetDate"
+           class="form-label">
+    </label>
+
+    <input asp-for="TargetDate"
+           class="form-control" />
+
+</div>
+
+
+<div class="mb-3">
+
+    <label asp-for="RemediationNotes"
+           class="form-label">
+    </label>
+
+    <textarea asp-for="RemediationNotes"
+              class="form-control"
+              rows="6"></textarea>
+
+</div>

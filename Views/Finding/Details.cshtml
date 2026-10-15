@@ -1,0 +1,430 @@
+﻿@using EVOLVE_VAPT.Security
+@model EVOLVE_VAPT.ViewModels.Finding.RemediationFormViewModel
+
+@{
+    ViewData["Title"] = "Finding Details";
+
+    var canReview =
+        User.IsInRole(AppRoles.Administrator) ||
+        User.IsInRole(AppRoles.SecurityAnalyst) ||
+        User.IsInRole(AppRoles.Reviewer);
+}
+<div class="page-header">
+
+    <div>
+        <h1 class="page-title">
+            @Model.Title
+        </h1>
+
+        <p class="page-description">
+            @Model.SourceFindingIdentifier
+        </p>
+    </div>
+
+
+    <a asp-action="Index"
+       class="btn btn-outline-secondary">
+
+        <i class="bi bi-arrow-left me-1"></i>
+        Back
+
+    </a>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+    <section class="dashboard-panel">
+
+        <div class="panel-header">
+            <h2 class="panel-title">
+                Finding
+            </h2>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Severity
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.SeverityName
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Status
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.FindingStatusName
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Assessment
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.AssessmentCode -
+                        @Model.AssessmentName
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Target
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.TargetValue
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Scanner
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.ScannerTypeCode
+                        @(Model.ScannerVersion ?? "")
+                    </span>
+                </div>
+
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        Scan Job
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.JobCode
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+<section class="dashboard-panel dashboard-panel-spacing">
+
+    <div class="panel-header">
+        <h2 class="panel-title">
+            Description
+        </h2>
+    </div>
+
+    <div class="panel-body">
+        @(Model.Description ?? "No description provided.")
+    </div>
+
+</section>
+
+
+<section class="dashboard-panel dashboard-panel-spacing">
+
+    <div class="panel-header">
+        <h2 class="panel-title">
+            Evidence
+        </h2>
+    </div>
+
+    <div class="panel-body">
+        <pre class="mb-0 text-wrap">@(Model.Evidence ?? "No evidence provided.")</pre>
+    </div>
+
+</section>
+
+
+<section class="dashboard-panel dashboard-panel-spacing">
+
+    <div class="panel-header">
+        <h2 class="panel-title">
+            Recommendation
+        </h2>
+    </div>
+
+    <div class="panel-body">
+        @(Model.Recommendation ?? "No recommendation provided.")
+    </div>
+
+</section>
+@if (canReview &&
+     Model.FindingStatusCode == "NEW")
+{
+    <section class="dashboard-panel dashboard-panel-spacing">
+
+        <div class="panel-body">
+
+            <form asp-action="StartReview"
+                  asp-route-id="@Model.FindingID"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    <i class="bi bi-search me-1"></i>
+
+                    Start Review
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+}
+@if (canReview &&
+     Model.FindingStatusCode == "UNDER_REVIEW")
+{
+    <section class="dashboard-panel dashboard-panel-spacing">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Analyst Decision
+                </h2>
+
+                <span class="panel-description">
+                    Validate whether this scanner result represents
+                    a genuine vulnerability.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <form asp-action="Confirm"
+                  asp-route-id="@Model.FindingID"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+
+                <label class="form-label">
+                    Validation Notes
+                </label>
+
+                <textarea name="notes"
+                      class="form-control"
+                      rows="3"
+                      maxlength="2000"></textarea>
+
+
+                <div class="d-flex gap-2 mt-3">
+
+                    <button type="submit"
+                            class="btn btn-success">
+
+                        <i class="bi bi-check-circle me-1"></i>
+                        Confirm Finding
+
+                    </button>
+
+
+                    <button type="button"
+                            class="btn btn-outline-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#falsePositiveModal">
+
+                        False Positive
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+}
+@if (canReview &&
+     Model.FindingStatusCode == "UNDER_REVIEW")
+{
+    <div class="modal fade"
+         id="falsePositiveModal"
+         tabindex="-1"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <form asp-action="FalsePositive"
+                      asp-route-id="@Model.FindingID"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+
+                    <div class="modal-header">
+
+                        <h5 class="modal-title">
+                            Mark False Positive
+                        </h5>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal">
+                        </button>
+
+                    </div>
+
+
+                    <div class="modal-body">
+
+                        <p>
+                            Explain why this scanner result should
+                            not be treated as a valid vulnerability.
+                        </p>
+
+                        <label class="form-label">
+                            Reason
+                        </label>
+
+                        <textarea name="reason"
+                              class="form-control"
+                              rows="4"
+                              maxlength="2000"
+                              required></textarea>
+
+                    </div>
+
+
+                    <div class="modal-footer">
+
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">
+
+                            Back
+
+                        </button>
+
+
+                        <button type="submit"
+                                class="btn btn-danger">
+
+                            Mark False Positive
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+@if (Model.FindingStatusCode == "CONFIRMED" ||
+     Model.FindingStatusCode == "FALSE_POSITIVE")
+{
+    <section class="dashboard-panel dashboard-panel-spacing">
+
+        <div class="panel-header">
+            <h2 class="panel-title">
+                Analyst Review
+            </h2>
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Reviewed By
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.ReviewedByEmail ?? "-")
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Reviewed
+                    </span>
+
+                    <span class="detail-value">
+
+                        @(Model.ReviewedDate.HasValue
+                                            ? Model.ReviewedDate.Value.ToString("MMM dd, yyyy hh:mm tt"): "-")
+
+                </span>
+
+                </div>
+
+            </div>
+
+
+        @if (!string.IsNullOrWhiteSpace(
+                Model.ValidationNotes))
+            {
+                <div class="mt-3">
+
+                    <strong>
+                        Validation Notes
+                    </strong>
+
+                    <div class="mt-1">
+                        @Model.ValidationNotes
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </section>
+}
+@if (canReview &&
+     Model.FindingStatusCode == "CONFIRMED")
+{
+    <div class="mt-3">
+
+        <a asp-controller="Remediation"
+           asp-action="Create"
+           asp-route-findingId="@Model.FindingID"
+           class="btn btn-primary">
+
+            <i class="bi bi-tools me-1"></i>
+
+            Start Remediation
+
+        </a>
+
+    </div>
+}

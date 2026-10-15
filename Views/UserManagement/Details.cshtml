@@ -1,0 +1,476 @@
+﻿@model EVOLVE_VAPT.ViewModels.Administration.UserDetailsViewModel
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            User Details
+        </h1>
+
+        <p class="page-description">
+            Review account information,
+            security status, and assigned roles.
+        </p>
+
+    </div>
+
+
+    <div>
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-1"></i>
+
+            Back
+
+        </a>
+
+    </div>
+
+</div>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+
+        <i class="bi bi-check-circle me-1"></i>
+
+        @TempData["SuccessMessage"]
+
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+
+        <i class="bi bi-exclamation-triangle me-1"></i>
+
+        @TempData["ErrorMessage"]
+
+    </div>
+}
+
+<div class="dashboard-grid">
+
+    <!-- ACCOUNT INFORMATION -->
+    <section class="dashboard-panel">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Account Information
+                </h2>
+
+                <span class="panel-description">
+                    Identity information for this user.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Email
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.Email
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        User Name
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.UserName
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Email Confirmed
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.EmailConfirmed
+                                                ? "Yes"
+                                                : "No")
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Status
+                    </span>
+
+                    <span class="detail-value">
+
+                        @if (Model.Status == "Active")
+                        {
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+                        }
+                        else if (Model.Status == "Locked")
+                        {
+                            <span class="badge bg-warning text-dark">
+                                Locked
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">
+                                Disabled
+                            </span>
+                        }
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SECURITY INFORMATION -->
+    <section class="dashboard-panel">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Security
+                </h2>
+
+                <span class="panel-description">
+                    Identity lockout and access state.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Failed Login Attempts
+                    </span>
+
+                    <span class="detail-value">
+                        @Model.AccessFailedCount
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Lockout Enabled
+                    </span>
+
+                    <span class="detail-value">
+                        @(Model.LockoutEnabled
+                                                ? "Yes"
+                                                : "No")
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item detail-item-full">
+
+                    <span class="detail-label">
+                        Lockout Until
+                    </span>
+
+                    <span class="detail-value">
+
+                        @if (Model.IsAdministrativelyDisabled)
+                        {
+                            <span>
+                                Indefinitely
+                                (administratively disabled)
+                            </span>
+                        }
+                        else if (Model.LockoutEnd.HasValue &&
+                        Model.LockoutEnd.Value >
+                        DateTimeOffset.UtcNow)
+                        {
+                        @Model.LockoutEnd.Value.ToLocalTime().ToString("MMM dd, yyyy hh:mm tt")}
+                        else
+                        {
+                            <span>
+                                -
+                            </span>
+                        }
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<section class="dashboard-panel dashboard-panel-spacing">
+
+    <div class="panel-header">
+
+        <div class="panel-title-group">
+
+            <h2 class="panel-title">
+                Roles
+            </h2>
+
+            <span class="panel-description">
+                Application roles currently
+                assigned to this account.
+            </span>
+
+        </div>
+        <div>
+            <a asp-action="EditRole"
+               asp-route-id="@Model.UserID"
+               class="btn btn-sm btn-outline-primary">
+
+                <i class="bi bi-shield-lock me-1"></i>
+
+                Edit Role
+
+            </a>
+        </div>
+
+    </div>
+  
+    <div class="panel-body">
+
+        @if (!Model.Roles.Any())
+        {
+            <span class="text-muted">
+                No roles assigned.
+            </span>
+        }
+        else
+        {
+            @foreach (var role in Model.Roles)
+            {
+                <span class="badge bg-secondary me-1">
+                    @role
+                </span>
+            }
+        }
+
+    </div>
+    <section class="dashboard-panel dashboard-panel-spacing">
+
+        <div class="panel-header">
+
+            <div class="panel-title-group">
+
+                <h2 class="panel-title">
+                    Account Actions
+                </h2>
+
+                <span class="panel-description">
+                    Administrative controls for
+                    account access.
+                </span>
+
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="d-flex gap-2 flex-wrap">
+                <a asp-action="ResetPassword"
+                   asp-route-id="@Model.UserID"
+                   class="btn btn-outline-warning">
+
+                    <i class="bi bi-key me-1"></i>
+
+                    Reset Password
+
+                </a>
+                @if (Model.IsAdministrativelyDisabled)
+                {
+
+                    <form asp-action="Enable"
+                          asp-route-id="@Model.UserID"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="btn btn-success">
+
+                            <i class="bi bi-person-check me-1"></i>
+
+                            Enable Account
+
+                        </button>
+
+                    </form>
+                }
+                else if (Model.IsTemporarilyLocked)
+                {
+                    <form asp-action="Unlock"
+                          asp-route-id="@Model.UserID"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+
+                        <button type="submit"
+                                class="btn btn-warning">
+
+                            <i class="bi bi-unlock me-1"></i>
+
+                            Unlock Account
+
+                        </button>
+
+                    </form>
+                }
+                else
+                {
+                    <button type="button"
+                            class="btn btn-outline-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#disableUserModal">
+
+                        <i class="bi bi-person-x me-1"></i>
+
+                        Disable Account
+
+                    </button>
+                }
+
+            </div>
+
+        </div>
+
+    </section>
+
+</section>
+@if (!Model.IsAdministrativelyDisabled &&
+     !Model.IsTemporarilyLocked)
+{
+    <div class="modal fade"
+         id="disableUserModal"
+         tabindex="-1"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <form asp-action="Disable"
+                      asp-route-id="@Model.UserID"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+
+                    <div class="modal-header">
+
+                        <h5 class="modal-title">
+                            Disable User
+                        </h5>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal">
+                        </button>
+
+                    </div>
+
+
+                    <div class="modal-body">
+
+                        <p>
+                            Disable access for
+                            <strong>@Model.Email</strong>?
+                        </p>
+
+                        <p class="text-muted mb-0">
+                            The user will no longer
+                            be able to sign in until
+                            an Administrator enables
+                            the account again.
+                        </p>
+
+                    </div>
+
+
+                    <div class="modal-footer">
+
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">
+
+                            Cancel
+
+                        </button>
+
+
+                        <button type="submit"
+                                class="btn btn-danger">
+
+                            Disable Account
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+}

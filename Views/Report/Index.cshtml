@@ -1,0 +1,110 @@
+﻿@model IEnumerable<EVOLVE_VAPT.Models.vwGet_AssessmentData>
+
+@{
+    ViewData["Title"] = "Reporting";
+}
+
+<div class="page-header">
+
+    <div>
+
+        <h1 class="page-title">
+            Reporting
+        </h1>
+
+        <p class="page-description">
+            Generate assessment-level security reports.
+        </p>
+
+    </div>
+
+</div>
+
+
+<section class="dashboard-panel">
+
+    <div class="panel-header">
+
+        <div class="panel-title-group">
+
+            <h2 class="panel-title">
+                Assessment Reports
+            </h2>
+
+            <span class="panel-description">
+                Select an assessment to view its consolidated VAPT report.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        @if (!Model.Any())
+        {
+            <div class="text-muted">
+                No assessments are available.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Assessment</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        @item.AssessmentCode
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    @item.AssessmentName
+                                </td>
+
+                                <td>
+                                    @item.AssessmentStatusName
+                                </td>
+
+                                <td class="text-end">
+
+                                    <a asp-action="Assessment"
+                                       asp-route-id="@item.AssessmentID"
+                                       class="btn btn-sm btn-outline-primary">
+
+                                        View Report
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+
+    </div>
+
+</section>
